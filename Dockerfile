@@ -7,15 +7,7 @@ RUN apt-get update && \
         zip \
         curl \
         sudo \
-        unzip \
-        libicu-dev \
-        libbz2-dev \
-        libpng-dev \
-        libjpeg-dev \
-        libmcrypt-dev \
-        libreadline-dev \
-        libfreetype6-dev \
-        g++
+        unzip
 
 # mod_rewrite for URL rewrite and mod_headers for .htaccess extra headers
 # like Access-Control-Allow-Origin
@@ -29,7 +21,6 @@ RUN docker-php-ext-install \
     iconv \
     bcmath \
     opcache \
-    calendar \
     mbstring \
     pdo_mysql \
     zip
