@@ -3,6 +3,7 @@ services:
   apache:
     build: .
     image: httpd
+    container_name: apache
     ports:
       - "80:80"
     volumes:
@@ -11,13 +12,15 @@ services:
       - default
   mysql:
     image: mysql
+    container_name: mysql
+    hostname: mysql
     ports:
-      - "3306:3306"
+      - "${MYSQL_PORT}:3306"
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=root
-      - MYSQL_DATABASE=database
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
     volumes:
       - ./data/dump:/docker-entrypoint-initdb.d
       - ./conf:/etc/mysql/conf.d
@@ -25,15 +28,17 @@ services:
     networks:
       - default
   phpmyadmin:
+    container_name: phpmyadmin
     image: phpmyadmin/phpmyadmin
     links:
-      - mysql:mysql
+      - mysql
     ports:
       - 8000:80
     environment:
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=root
+      - PMA_ARBITRARY=1
+      - PMA_HOST=db
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
       - MYSQL_ROOT_PASSWORD=root
-
-volumes:
-  persistent:
+    networks:
+      - default
